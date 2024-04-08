@@ -232,6 +232,16 @@ class Series(IndexOpsMixin[S1], NDFrame):
     @overload
     def __new__(  # type: ignore[overload-overlap]
         cls,
+        data: Sequence[bool] | dict[HashableT1, bool] | bool,
+        index: Axes | None = ...,
+        *,
+        dtype: TimestampDtypeArg = ...,
+        name: Hashable = ...,
+        copy: bool = ...,
+    ) -> BoolSeries: ...
+    @overload
+    def __new__(  # type: ignore[overload-overlap]
+        cls,
         data: (
             DatetimeIndex
             | Sequence[np.datetime64 | datetime | date]
@@ -2189,3 +2199,7 @@ class OffsetSeries(Series[BaseOffset]):
 class IntervalSeries(Series[Interval[_OrderableT]], Generic[_OrderableT]):
     @property
     def array(self) -> IntervalArray: ...
+    def diff(self, periods: int = ...) -> Never: ...
+
+class BoolSeries(Series[bool]):
+    def diff(self, periods: int = ...) -> Series[type[object]]: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride]
