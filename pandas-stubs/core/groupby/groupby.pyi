@@ -34,7 +34,10 @@ from pandas.core.resample import (
     PeriodIndexResamplerGroupby,
     TimedeltaIndexResamplerGroupby,
 )
-from pandas.core.series import Series
+from pandas.core.series import (
+    BoolSeries,
+    Series,
+)
 from pandas.core.window import (
     ExpandingGroupby,
     ExponentialMovingWindowGroupby,
@@ -167,12 +170,12 @@ class GroupBy(BaseGroupBy[NDFrameT]):
     def apply(self, func: Callable | str, *args, **kwargs) -> NDFrameT: ...
     @final
     @overload
-    def any(self: GroupBy[Series], skipna: bool = ...) -> Series[bool]: ...
+    def any(self: GroupBy[Series], skipna: bool = ...) -> BoolSeries: ...
     @overload
     def any(self: GroupBy[DataFrame], skipna: bool = ...) -> DataFrame: ...
     @final
     @overload
-    def all(self: GroupBy[Series], skipna: bool = ...) -> Series[bool]: ...
+    def all(self: GroupBy[Series], skipna: bool = ...) -> BoolSeries: ...
     @overload
     def all(self: GroupBy[DataFrame], skipna: bool = ...) -> DataFrame: ...
     @final

@@ -53,12 +53,16 @@ from tests.extension.decimal.array import DecimalDtype
 
 if TYPE_CHECKING:
     from pandas.core.series import (
+        BoolSeries,
+        ComplexSeries,
         TimedeltaSeries,
         TimestampSeries,
     )
 else:
     TimedeltaSeries: TypeAlias = pd.Series
     TimestampSeries: TypeAlias = pd.Series
+    BoolSeries: TypeAlias = pd.Series
+    ComplexSeries: TypeAlias = pd.Series
 
 if TYPE_CHECKING:
     from pandas._typing import (
@@ -402,7 +406,7 @@ def test_types_sum() -> None:
     check(assert_type(s0.sum(numeric_only=False), float), np.float64)
     assert_type(s0.sum(min_count=4), float)
 
-    s1 = assert_type(pd.Series([False, True], dtype=bool), "pd.Series[bool]")
+    s1 = assert_type(pd.Series([False, True], dtype=bool), "BoolSeries")
     check(assert_type(s1.sum(), "int"), np.integer)
     check(assert_type(s1.sum(skipna=False), "int"), np.integer)
     check(assert_type(s1.sum(numeric_only=False), "int"), np.integer)
@@ -931,13 +935,13 @@ def test_types_between() -> None:
     s1 = pd.Series([1, 2, 3])
     s2 = pd.Series([0, 1, 2])
     s3 = pd.Series([2, 3, 4])
-    check(assert_type(s1.between(0, 2), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(s1.between(0, 2), "BoolSeries"), pd.Series, np.bool_)
     check(
-        assert_type(s1.between([0, 1, 2], [2, 3, 4]), "pd.Series[bool]"),
+        assert_type(s1.between([0, 1, 2], [2, 3, 4]), "BoolSeries"),
         pd.Series,
         np.bool_,
     )
-    check(assert_type(s1.between(s2, s3), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(s1.between(s2, s3), "BoolSeries"), pd.Series, np.bool_)
 
 
 def test_types_agg() -> None:
@@ -1196,7 +1200,7 @@ def test_series_index_isin() -> None:
 def test_series_invert() -> None:
     s1 = pd.Series([True, False, True])
     s2 = ~s1
-    check(assert_type(s2, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(s2, "BoolSeries"), pd.Series, np.bool_)
     s3 = pd.Series([1, 2, 3])
     check(assert_type(s3[s2], "pd.Series[int]"), pd.Series, np.integer)
     check(assert_type(s3.loc[s2], "pd.Series[int]"), pd.Series, np.integer)
@@ -1392,31 +1396,29 @@ def test_string_accessors():
     check(assert_type(s.str.casefold(), pd.Series), pd.Series)
     check(assert_type(s.str.cat(sep="X"), str), str)
     check(assert_type(s.str.center(10), pd.Series), pd.Series)
-    check(assert_type(s.str.contains("a"), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(s.str.contains("a"), "BoolSeries"), pd.Series, np.bool_)
     check(assert_type(s.str.count("pp"), "pd.Series[int]"), pd.Series, np.integer)
     check(assert_type(s.str.decode("utf-8"), pd.Series), pd.Series)
     check(assert_type(s.str.encode("latin-1"), pd.Series), pd.Series)
-    check(assert_type(s.str.endswith("e"), "pd.Series[bool]"), pd.Series, np.bool_)
-    check(
-        assert_type(s.str.endswith(("e", "f")), "pd.Series[bool]"), pd.Series, np.bool_
-    )
+    check(assert_type(s.str.endswith("e"), "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s.str.endswith(("e", "f")), "BoolSeries"), pd.Series, np.bool_)
     check(assert_type(s3.str.extract(r"([ab])?(\d)"), pd.DataFrame), pd.DataFrame)
     check(assert_type(s3.str.extractall(r"([ab])?(\d)"), pd.DataFrame), pd.DataFrame)
     check(assert_type(s.str.find("p"), pd.Series), pd.Series)
     check(assert_type(s.str.findall("pp"), pd.Series), pd.Series)
-    check(assert_type(s.str.fullmatch("apple"), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(s.str.fullmatch("apple"), "BoolSeries"), pd.Series, np.bool_)
     check(assert_type(s.str.get(2), pd.Series), pd.Series)
     check(assert_type(s.str.get_dummies(), pd.DataFrame), pd.DataFrame)
     check(assert_type(s.str.index("p"), pd.Series), pd.Series)
-    check(assert_type(s.str.isalnum(), "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s.str.isalpha(), "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s.str.isdecimal(), "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s.str.isdigit(), "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s.str.isnumeric(), "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s.str.islower(), "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s.str.isspace(), "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s.str.istitle(), "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s.str.isupper(), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(s.str.isalnum(), "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s.str.isalpha(), "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s.str.isdecimal(), "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s.str.isdigit(), "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s.str.isnumeric(), "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s.str.islower(), "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s.str.isspace(), "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s.str.istitle(), "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s.str.isupper(), "BoolSeries"), pd.Series, np.bool_)
     check(assert_type(s2.str.join("-"), pd.Series), pd.Series)
     check(assert_type(s.str.len(), "pd.Series[int]"), pd.Series, np.integer)
     check(assert_type(s.str.ljust(80), pd.Series), pd.Series)
@@ -1442,9 +1444,9 @@ def test_string_accessors():
     check(assert_type(s.str.split("a"), pd.Series), pd.Series)
     # GH 194
     check(assert_type(s.str.split("a", expand=True), pd.DataFrame), pd.DataFrame)
-    check(assert_type(s.str.startswith("a"), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(s.str.startswith("a"), "BoolSeries"), pd.Series, np.bool_)
     check(
-        assert_type(s.str.startswith(("a", "b")), "pd.Series[bool]"),
+        assert_type(s.str.startswith(("a", "b")), "BoolSeries"),
         pd.Series,
         np.bool_,
     )
@@ -1512,78 +1514,70 @@ def test_series_overloads_extract():
 def test_relops() -> None:
     # GH 175
     s: str = "abc"
-    check(assert_type(pd.Series([s]) > s, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([s]) < s, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([s]) <= s, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([s]) >= s, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([s]) > s, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([s]) < s, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([s]) <= s, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([s]) >= s, "BoolSeries"), pd.Series, np.bool_)
 
     b: bytes = b"def"
-    check(assert_type(pd.Series([b]) > b, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([b]) < b, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([b]) <= b, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([b]) >= b, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([b]) > b, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([b]) < b, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([b]) <= b, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([b]) >= b, "BoolSeries"), pd.Series, np.bool_)
 
     dtd = datetime.date(2022, 7, 31)
-    check(assert_type(pd.Series([dtd]) > dtd, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([dtd]) < dtd, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([dtd]) <= dtd, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([dtd]) >= dtd, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([dtd]) > dtd, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([dtd]) < dtd, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([dtd]) <= dtd, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([dtd]) >= dtd, "BoolSeries"), pd.Series, np.bool_)
 
     dtdt = datetime.datetime(2022, 7, 31, 8, 32, 21)
-    check(assert_type(pd.Series([dtdt]) > dtdt, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([dtdt]) < dtdt, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(
-        assert_type(pd.Series([dtdt]) <= dtdt, "pd.Series[bool]"), pd.Series, np.bool_
-    )
-    check(
-        assert_type(pd.Series([dtdt]) >= dtdt, "pd.Series[bool]"), pd.Series, np.bool_
-    )
+    check(assert_type(pd.Series([dtdt]) > dtdt, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([dtdt]) < dtdt, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([dtdt]) <= dtdt, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([dtdt]) >= dtdt, "BoolSeries"), pd.Series, np.bool_)
 
     dttd = datetime.timedelta(seconds=10)
-    check(assert_type(pd.Series([dttd]) > dttd, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([dttd]) < dttd, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(
-        assert_type(pd.Series([dttd]) <= dttd, "pd.Series[bool]"), pd.Series, np.bool_
-    )
-    check(
-        assert_type(pd.Series([dttd]) >= dttd, "pd.Series[bool]"), pd.Series, np.bool_
-    )
+    check(assert_type(pd.Series([dttd]) > dttd, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([dttd]) < dttd, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([dttd]) <= dttd, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([dttd]) >= dttd, "BoolSeries"), pd.Series, np.bool_)
 
     bo: bool = True
-    check(assert_type(pd.Series([bo]) > bo, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([bo]) < bo, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([bo]) <= bo, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([bo]) >= bo, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([bo]) > bo, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([bo]) < bo, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([bo]) <= bo, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([bo]) >= bo, "BoolSeries"), pd.Series, np.bool_)
 
     ai: int = 10
-    check(assert_type(pd.Series([ai]) > ai, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([ai]) < ai, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([ai]) <= ai, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([ai]) >= ai, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ai]) > ai, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ai]) < ai, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ai]) <= ai, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ai]) >= ai, "BoolSeries"), pd.Series, np.bool_)
 
     af: float = 3.14
-    check(assert_type(pd.Series([af]) > af, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([af]) < af, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([af]) <= af, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([af]) >= af, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([af]) > af, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([af]) < af, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([af]) <= af, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([af]) >= af, "BoolSeries"), pd.Series, np.bool_)
 
     ac: complex = 1 + 2j
-    check(assert_type(pd.Series([ac]) > ac, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([ac]) < ac, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([ac]) <= ac, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([ac]) >= ac, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ac]) > ac, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ac]) < ac, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ac]) <= ac, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ac]) >= ac, "BoolSeries"), pd.Series, np.bool_)
 
     ts = pd.Timestamp("2022-07-31 08:35:12")
-    check(assert_type(pd.Series([ts]) > ts, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([ts]) < ts, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([ts]) <= ts, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([ts]) >= ts, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ts]) > ts, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ts]) < ts, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ts]) <= ts, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([ts]) >= ts, "BoolSeries"), pd.Series, np.bool_)
 
     td = pd.Timedelta(seconds=10)
-    check(assert_type(pd.Series([td]) > td, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([td]) < td, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([td]) <= td, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(pd.Series([td]) >= td, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([td]) > td, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([td]) < td, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([td]) <= td, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(pd.Series([td]) >= td, "BoolSeries"), pd.Series, np.bool_)
 
 
 def test_resample() -> None:
@@ -1698,14 +1692,14 @@ def test_bitwise_operators() -> None:
         r"\(e.g. list, tuple\) are deprecated",
         lower="2.0.99",
     ):
-        check(assert_type(s & [1, 2, 3, 4], "pd.Series[bool]"), pd.Series, np.bool_)
-        check(assert_type([1, 2, 3, 4] & s, "pd.Series[bool]"), pd.Series, np.bool_)
+        check(assert_type(s & [1, 2, 3, 4], "BoolSeries"), pd.Series, np.bool_)
+        check(assert_type([1, 2, 3, 4] & s, "BoolSeries"), pd.Series, np.bool_)
 
-        check(assert_type(s | [1, 2, 3, 4], "pd.Series[bool]"), pd.Series, np.bool_)
-        check(assert_type([1, 2, 3, 4] | s, "pd.Series[bool]"), pd.Series, np.bool_)
+        check(assert_type(s | [1, 2, 3, 4], "BoolSeries"), pd.Series, np.bool_)
+        check(assert_type([1, 2, 3, 4] | s, "BoolSeries"), pd.Series, np.bool_)
 
-        check(assert_type(s ^ [1, 2, 3, 4], "pd.Series[bool]"), pd.Series, np.bool_)
-        check(assert_type([1, 2, 3, 4] ^ s, "pd.Series[bool]"), pd.Series, np.bool_)
+        check(assert_type(s ^ [1, 2, 3, 4], "BoolSeries"), pd.Series, np.bool_)
+        check(assert_type([1, 2, 3, 4] ^ s, "BoolSeries"), pd.Series, np.bool_)
 
 
 def test_logical_operators() -> None:
@@ -1713,31 +1707,31 @@ def test_logical_operators() -> None:
     df = pd.DataFrame({"a": [1, 2, 3], "b": [2, 3, 4]})
 
     check(
-        assert_type((df["a"] >= 2) & (df["b"] >= 2), "pd.Series[bool]"),
+        assert_type((df["a"] >= 2) & (df["b"] >= 2), "BoolSeries"),
         pd.Series,
         np.bool_,
     )
     check(
-        assert_type((df["a"] >= 2) | (df["b"] >= 2), "pd.Series[bool]"),
+        assert_type((df["a"] >= 2) | (df["b"] >= 2), "BoolSeries"),
         pd.Series,
         np.bool_,
     )
     check(
-        assert_type((df["a"] >= 2) ^ (df["b"] >= 2), "pd.Series[bool]"),
+        assert_type((df["a"] >= 2) ^ (df["b"] >= 2), "BoolSeries"),
         pd.Series,
         np.bool_,
     )
-    check(assert_type((df["a"] >= 2) & True, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type((df["a"] >= 2) & True, "BoolSeries"), pd.Series, np.bool_)
 
-    check(assert_type((df["a"] >= 2) | True, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type((df["a"] >= 2) | True, "BoolSeries"), pd.Series, np.bool_)
 
-    check(assert_type((df["a"] >= 2) ^ True, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type((df["a"] >= 2) ^ True, "BoolSeries"), pd.Series, np.bool_)
 
-    check(assert_type(True & (df["a"] >= 2), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(True & (df["a"] >= 2), "BoolSeries"), pd.Series, np.bool_)
 
-    check(assert_type(True | (df["a"] >= 2), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(True | (df["a"] >= 2), "BoolSeries"), pd.Series, np.bool_)
 
-    check(assert_type(True ^ (df["a"] >= 2), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(True ^ (df["a"] >= 2), "BoolSeries"), pd.Series, np.bool_)
 
     with pytest_warns_bounded(
         FutureWarning,
@@ -1746,32 +1740,32 @@ def test_logical_operators() -> None:
         lower="2.0.99",
     ):
         check(
-            assert_type((df["a"] >= 2) ^ [True, False, True], "pd.Series[bool]"),
+            assert_type((df["a"] >= 2) ^ [True, False, True], "BoolSeries"),
             pd.Series,
             np.bool_,
         )
         check(
-            assert_type((df["a"] >= 2) & [True, False, True], "pd.Series[bool]"),
+            assert_type((df["a"] >= 2) & [True, False, True], "BoolSeries"),
             pd.Series,
             np.bool_,
         )
         check(
-            assert_type((df["a"] >= 2) | [True, False, True], "pd.Series[bool]"),
+            assert_type((df["a"] >= 2) | [True, False, True], "BoolSeries"),
             pd.Series,
             np.bool_,
         )
         check(
-            assert_type([True, False, True] & (df["a"] >= 2), "pd.Series[bool]"),
+            assert_type([True, False, True] & (df["a"] >= 2), "BoolSeries"),
             pd.Series,
             np.bool_,
         )
         check(
-            assert_type([True, False, True] | (df["a"] >= 2), "pd.Series[bool]"),
+            assert_type([True, False, True] | (df["a"] >= 2), "BoolSeries"),
             pd.Series,
             np.bool_,
         )
         check(
-            assert_type([True, False, True] ^ (df["a"] >= 2), "pd.Series[bool]"),
+            assert_type([True, False, True] ^ (df["a"] >= 2), "BoolSeries"),
             pd.Series,
             np.bool_,
         )
@@ -2192,19 +2186,19 @@ def test_astype_bool(cast_arg: BooleanDtypeArg, target_type: type) -> None:
 
     if TYPE_CHECKING:
         # python boolean
-        assert_type(s.astype(bool), "pd.Series[bool]")
-        assert_type(s.astype("bool"), "pd.Series[bool]")
+        assert_type(s.astype(bool), "BoolSeries")
+        assert_type(s.astype("bool"), "BoolSeries")
         # pandas boolean
-        assert_type(s.astype(pd.BooleanDtype()), "pd.Series[bool]")
-        assert_type(s.astype("boolean"), "pd.Series[bool]")
+        assert_type(s.astype(pd.BooleanDtype()), "BoolSeries")
+        assert_type(s.astype("boolean"), "BoolSeries")
         # numpy boolean type
-        assert_type(s.astype(np.bool_), "pd.Series[bool]")
-        assert_type(s.astype("bool_"), "pd.Series[bool]")
-        assert_type(s.astype("bool8"), "pd.Series[bool]")
-        assert_type(s.astype("?"), "pd.Series[bool]")
+        assert_type(s.astype(np.bool_), "BoolSeries")
+        assert_type(s.astype("bool_"), "BoolSeries")
+        assert_type(s.astype("bool8"), "BoolSeries")
+        assert_type(s.astype("?"), "BoolSeries")
         # pyarrow boolean type
-        assert_type(s.astype("bool[pyarrow]"), "pd.Series[bool]")
-        assert_type(s.astype("boolean[pyarrow]"), "pd.Series[bool]")
+        assert_type(s.astype("bool[pyarrow]"), "BoolSeries")
+        assert_type(s.astype("boolean[pyarrow]"), "BoolSeries")
 
 
 @pytest.mark.parametrize("cast_arg, target_type", ASTYPE_INT_ARGS, ids=repr)
@@ -2394,31 +2388,31 @@ def test_astype_complex(cast_arg: ComplexDtypeArg, target_type: type) -> None:
     check(s.astype(cast_arg), pd.Series, target_type)
 
     if TYPE_CHECKING:
-        assert_type(s.astype(complex), "pd.Series[complex]")
-        assert_type(s.astype("complex"), "pd.Series[complex]")
+        assert_type(s.astype(complex), "ComplexSeries")
+        assert_type(s.astype("complex"), "ComplexSeries")
         # numpy complex64
-        assert_type(s.astype(np.csingle), "pd.Series[complex]")
-        assert_type(s.astype("csingle"), "pd.Series[complex]")
-        assert_type(s.astype("singlecomplex"), "pd.Series[complex]")
-        assert_type(s.astype("complex64"), "pd.Series[complex]")
-        assert_type(s.astype("F"), "pd.Series[complex]")
-        assert_type(s.astype("c8"), "pd.Series[complex]")
+        assert_type(s.astype(np.csingle), "ComplexSeries")
+        assert_type(s.astype("csingle"), "ComplexSeries")
+        assert_type(s.astype("singlecomplex"), "ComplexSeries")
+        assert_type(s.astype("complex64"), "ComplexSeries")
+        assert_type(s.astype("F"), "ComplexSeries")
+        assert_type(s.astype("c8"), "ComplexSeries")
         # numpy complex128
-        assert_type(s.astype(np.cdouble), "pd.Series[complex]")
-        assert_type(s.astype("cdouble"), "pd.Series[complex]")
-        assert_type(s.astype("cfloat"), "pd.Series[complex]")
-        assert_type(s.astype("complex_"), "pd.Series[complex]")
-        assert_type(s.astype("complex128"), "pd.Series[complex]")
-        assert_type(s.astype("D"), "pd.Series[complex]")
-        assert_type(s.astype("c16"), "pd.Series[complex]")
+        assert_type(s.astype(np.cdouble), "ComplexSeries")
+        assert_type(s.astype("cdouble"), "ComplexSeries")
+        assert_type(s.astype("cfloat"), "ComplexSeries")
+        assert_type(s.astype("complex_"), "ComplexSeries")
+        assert_type(s.astype("complex128"), "ComplexSeries")
+        assert_type(s.astype("D"), "ComplexSeries")
+        assert_type(s.astype("c16"), "ComplexSeries")
         # numpy complex256
-        assert_type(s.astype(np.clongdouble), "pd.Series[complex]")
-        assert_type(s.astype("clongdouble"), "pd.Series[complex]")
-        assert_type(s.astype("clongfloat"), "pd.Series[complex]")
-        assert_type(s.astype("longcomplex"), "pd.Series[complex]")
-        assert_type(s.astype("complex256"), "pd.Series[complex]")
-        assert_type(s.astype("G"), "pd.Series[complex]")
-        assert_type(s.astype("c32"), "pd.Series[complex]")
+        assert_type(s.astype(np.clongdouble), "ComplexSeries")
+        assert_type(s.astype("clongdouble"), "ComplexSeries")
+        assert_type(s.astype("clongfloat"), "ComplexSeries")
+        assert_type(s.astype("longcomplex"), "ComplexSeries")
+        assert_type(s.astype("complex256"), "ComplexSeries")
+        assert_type(s.astype("G"), "ComplexSeries")
+        assert_type(s.astype("c32"), "ComplexSeries")
 
 
 @pytest.mark.parametrize("cast_arg, target_type", ASTYPE_TIMESTAMP_ARGS, ids=repr)
@@ -3114,6 +3108,9 @@ def test_diff() -> None:
         object,
     )
     # bool -> object
+    # reveal_type(pd.Series([True]))
+    # reveal_type(pd.Series([0, 1], dtype=bool))
+    # reveal_type(pd.Series([0, 1]).astype(bool))
     check(
         assert_type(
             pd.Series([True, True, False, False, True]).diff(),
@@ -3123,15 +3120,21 @@ def test_diff() -> None:
         object,
     )
     # object -> object
-    check(assert_type(s.astype(object).diff(), "pd.Series[object]"), pd.Series, object)
+    check(
+        assert_type(s.astype(object).diff(), "pd.Series[type[object]]"),
+        pd.Series,
+        object,
+    )
     # Baseoffset (object) -> object
     # from pandas.tseries.frequencies import to_offset
     # pd.Series([to_offset("5min"), to_offset("1D1h")]).diff()
     # pd.Series([pd.DateOffset(days=1), pd.DateOffset(days=2)]).diff()
     # complex -> complex
-    check(
-        assert_type(s.astype(complex).diff(), "pd.Series[complex]"), pd.Series, complex
-    )
+    # reveal_type(pd.Series([1 + 2j]))
+    # reveal_type(pd.Series([1], dtype=complex))
+    # reveal_type(s.astype(complex))
+    check(assert_type(s.astype(complex).diff(), "ComplexSeries"), pd.Series, complex)
+    check(assert_type(pd.Series([1 + 2j]).diff(), "ComplexSeries"), pd.Series, complex)
     if TYPE_CHECKING_INVALID_USAGE:
         # interval -> TypeError: IntervalArray has no 'diff' method. Convert to a suitable dtype prior to calling 'diff'.
         assert_never(pd.Series([pd.Interval(0, 2), pd.Interval(1, 4)]).diff())

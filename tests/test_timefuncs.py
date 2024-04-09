@@ -43,6 +43,7 @@ from pandas.tseries.offsets import (
 )
 
 if TYPE_CHECKING:
+    from pandas.core.series import BoolSeries  # noqa: F401
     from pandas.core.series import PeriodSeries  # noqa: F401
     from pandas.core.series import TimedeltaSeries  # noqa: F401
     from pandas.core.series import TimestampSeries  # noqa: F401
@@ -94,18 +95,18 @@ def test_types_timestamp_series_comparisons() -> None:
     tssr = tss <= ts
     tssr2 = tss >= ts
     tssr3 = tss == ts
-    check(assert_type(tssr, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(tssr2, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(tssr3, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(tssr, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(tssr2, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(tssr3, "BoolSeries"), pd.Series, np.bool_)
     # GH 265
     data = pd.date_range("2022-01-01", "2022-01-31", freq="D")
     s = pd.Series(data)
     ts2 = pd.Timestamp("2022-01-15")
     check(assert_type(s, "TimestampSeries"), pd.Series, pd.Timestamp)
-    check(assert_type(ts2 <= s, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(ts2 >= s, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(ts2 < s, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(ts2 > s, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(ts2 <= s, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(ts2 >= s, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(ts2 < s, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(ts2 > s, "BoolSeries"), pd.Series, np.bool_)
 
 
 def test_types_pydatetime() -> None:
@@ -153,7 +154,7 @@ def test_timestamp_timedelta_series_arithmetic() -> None:
     r4 = pd.Timedelta(5, "days") / r1
     check(assert_type(r4, "pd.Series[float]"), pd.Series, float)
     sb = pd.Series([1, 2]) == pd.Series([1, 3])
-    check(assert_type(sb, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(sb, "BoolSeries"), pd.Series, np.bool_)
     r5 = sb * r1
     check(assert_type(r5, "TimedeltaSeries"), pd.Series, pd.Timedelta)
     r6 = r1 * 4
@@ -339,13 +340,13 @@ def test_series_dt_accessors() -> None:
     check(assert_type(s0.dt.dayofyear, "pd.Series[int]"), pd.Series, np.integer)
     check(assert_type(s0.dt.day_of_year, "pd.Series[int]"), pd.Series, np.integer)
     check(assert_type(s0.dt.quarter, "pd.Series[int]"), pd.Series, np.integer)
-    check(assert_type(s0.dt.is_month_start, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s0.dt.is_month_end, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s0.dt.is_quarter_start, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s0.dt.is_quarter_end, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s0.dt.is_year_start, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s0.dt.is_year_end, "pd.Series[bool]"), pd.Series, np.bool_)
-    check(assert_type(s0.dt.is_leap_year, "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(s0.dt.is_month_start, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s0.dt.is_month_end, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s0.dt.is_quarter_start, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s0.dt.is_quarter_end, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s0.dt.is_year_start, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s0.dt.is_year_end, "BoolSeries"), pd.Series, np.bool_)
+    check(assert_type(s0.dt.is_leap_year, "BoolSeries"), pd.Series, np.bool_)
     check(assert_type(s0.dt.daysinmonth, "pd.Series[int]"), pd.Series, np.integer)
     check(assert_type(s0.dt.days_in_month, "pd.Series[int]"), pd.Series, np.integer)
     assert assert_type(s0.dt.tz, Optional[dt.tzinfo]) is None

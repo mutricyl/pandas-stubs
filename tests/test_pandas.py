@@ -5,6 +5,7 @@ import random
 from typing import (
     TYPE_CHECKING,
     Any,
+    TypeAlias,
     Union,
 )
 
@@ -31,6 +32,11 @@ from tests import (
     check,
     pytest_warns_bounded,
 )
+
+if TYPE_CHECKING:
+    from pandas.core.series import BoolSeries
+else:
+    BoolSeries: TypeAlias = pd.Series
 
 
 def test_types_to_datetime() -> None:
@@ -313,10 +319,10 @@ def test_types_json_normalize() -> None:
 def test_isna() -> None:
     # https://github.com/pandas-dev/pandas-stubs/issues/264
     s1 = pd.Series([1, np.nan, 3.2])
-    check(assert_type(pd.isna(s1), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(pd.isna(s1), "BoolSeries"), pd.Series, np.bool_)
 
     s2 = pd.Series([1, 3.2])
-    check(assert_type(pd.notna(s2), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(pd.notna(s2), "BoolSeries"), pd.Series, np.bool_)
 
     df1 = pd.DataFrame({"a": [1, 2, 1, 2], "b": [1, 1, 2, np.nan]})
     check(assert_type(pd.isna(df1), "pd.DataFrame"), pd.DataFrame)

@@ -13,6 +13,7 @@ import pandas as pd
 from pandas import Index
 from pandas.core.indexes.extension import ExtensionIndex
 from pandas.core.series import (
+    BoolSeries,
     Series,
     TimedeltaSeries,
     TimestampSeries,
@@ -258,6 +259,7 @@ class IntervalIndex(ExtensionIndex[IntervalT], IntervalMixin):
             | Index
             | Series[bool]
             | np_ndarray_bool
+            | BoolSeries
         ),
     ) -> IntervalIndex[IntervalT]: ...
     @overload
@@ -271,29 +273,29 @@ class IntervalIndex(ExtensionIndex[IntervalT], IntervalMixin):
         self, other: IntervalT | IntervalIndex[IntervalT]
     ) -> np_ndarray_bool: ...
     @overload
-    def __gt__(self, other: pd.Series[IntervalT]) -> pd.Series[bool]: ...
+    def __gt__(self, other: pd.Series[IntervalT]) -> BoolSeries: ...
     @overload  # type: ignore[override]
     def __ge__(
         self, other: IntervalT | IntervalIndex[IntervalT]
     ) -> np_ndarray_bool: ...
     @overload
-    def __ge__(self, other: pd.Series[IntervalT]) -> pd.Series[bool]: ...
+    def __ge__(self, other: pd.Series[IntervalT]) -> BoolSeries: ...
     @overload  # type: ignore[override]
     def __le__(
         self, other: IntervalT | IntervalIndex[IntervalT]
     ) -> np_ndarray_bool: ...
     @overload
-    def __le__(self, other: pd.Series[IntervalT]) -> pd.Series[bool]: ...
+    def __le__(self, other: pd.Series[IntervalT]) -> BoolSeries: ...
     @overload  # type: ignore[override]
     def __lt__(
         self, other: IntervalT | IntervalIndex[IntervalT]
     ) -> np_ndarray_bool: ...
     @overload
-    def __lt__(self, other: pd.Series[IntervalT]) -> pd.Series[bool]: ...
+    def __lt__(self, other: pd.Series[IntervalT]) -> BoolSeries: ...
     @overload  # type: ignore[override]
     def __eq__(self, other: IntervalT | IntervalIndex[IntervalT]) -> np_ndarray_bool: ...  # type: ignore[overload-overlap] # pyright: ignore[reportOverlappingOverload]
     @overload
-    def __eq__(self, other: pd.Series[IntervalT]) -> pd.Series[bool]: ...  # type: ignore[overload-overlap]
+    def __eq__(self, other: pd.Series[IntervalT]) -> BoolSeries: ...  # type: ignore[overload-overlap]
     @overload
     def __eq__(  # pyright: ignore[reportIncompatibleMethodOverride]
         self, other: object
@@ -301,7 +303,7 @@ class IntervalIndex(ExtensionIndex[IntervalT], IntervalMixin):
     @overload  # type: ignore[override]
     def __ne__(self, other: IntervalT | IntervalIndex[IntervalT]) -> np_ndarray_bool: ...  # type: ignore[overload-overlap] # pyright: ignore[reportOverlappingOverload]
     @overload
-    def __ne__(self, other: pd.Series[IntervalT]) -> pd.Series[bool]: ...  # type: ignore[overload-overlap]
+    def __ne__(self, other: pd.Series[IntervalT]) -> BoolSeries: ...  # type: ignore[overload-overlap]
     @overload
     def __ne__(  # pyright: ignore[reportIncompatibleMethodOverride]
         self, other: object

@@ -60,6 +60,16 @@ if TYPE_CHECKING:
 else:
     _PandasNamedTuple: TypeAlias = tuple
 
+if TYPE_CHECKING:
+    from pandas.core.series import (  # TimedeltaSeries,; TimestampSeries,; ComplexSeries
+        BoolSeries,
+    )
+else:
+    # TimedeltaSeries: TypeAlias = pd.Series
+    # TimestampSeries: TypeAlias = pd.Series
+    BoolSeries: TypeAlias = pd.Series
+    # ComplexSeries: TypeAlias = pd.Series
+
 DF = pd.DataFrame(data={"col1": [1, 2], "col2": [3, 4]})
 
 
@@ -114,13 +124,13 @@ def test_types_init() -> None:
 
 def test_types_all() -> None:
     df = pd.DataFrame([[False, True], [False, False]], columns=["col1", "col2"])
-    check(assert_type(df.all(), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(df.all(), "BoolSeries"), pd.Series, np.bool_)
     check(assert_type(df.all(axis=None), bool), np.bool_)
 
 
 def test_types_any() -> None:
     df = pd.DataFrame([[False, True], [False, False]], columns=["col1", "col2"])
-    check(assert_type(df.any(), "pd.Series[bool]"), pd.Series, np.bool_)
+    check(assert_type(df.any(), "BoolSeries"), pd.Series, np.bool_)
     check(assert_type(df.any(axis=None), bool), np.bool_)
 
 
@@ -1102,12 +1112,12 @@ def test_types_groupby_any() -> None:
     check(assert_type(df.groupby("col1").any(), pd.DataFrame), pd.DataFrame)
     check(assert_type(df.groupby("col1").all(), pd.DataFrame), pd.DataFrame)
     check(
-        assert_type(df.groupby("col1")["col2"].any(), "pd.Series[bool]"),
+        assert_type(df.groupby("col1")["col2"].any(), "BoolSeries"),
         pd.Series,
         np.bool_,
     )
     check(
-        assert_type(df.groupby("col1")["col2"].any(), "pd.Series[bool]"),
+        assert_type(df.groupby("col1")["col2"].any(), "BoolSeries"),
         pd.Series,
         np.bool_,
     )

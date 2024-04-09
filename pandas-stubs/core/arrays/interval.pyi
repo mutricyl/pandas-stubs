@@ -6,6 +6,7 @@ from pandas import (
     Series,
 )
 from pandas.core.arrays.base import ExtensionArray as ExtensionArray
+from pandas.core.series import BoolSeries
 from typing_extensions import Self
 
 from pandas._libs.interval import (
@@ -77,7 +78,7 @@ class IntervalArray(IntervalMixin, ExtensionArray):
     def to_tuples(self, na_tuple: bool = ...): ...
     def repeat(self, repeats, axis: Axis | None = ...): ...
     @overload
-    def contains(self, other: Series) -> Series[bool]: ...
+    def contains(self, other: Series) -> BoolSeries: ...
     @overload
     def contains(
         self, other: Scalar | ExtensionArray | Index | np.ndarray

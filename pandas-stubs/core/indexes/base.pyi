@@ -32,6 +32,7 @@ from pandas import (
 )
 from pandas.core.arrays import ExtensionArray
 from pandas.core.base import IndexOpsMixin
+from pandas.core.series import BoolSeries
 from pandas.core.strings import StringMethods
 from typing_extensions import (
     Never,
@@ -387,6 +388,7 @@ class Index(IndexOpsMixin[S1]):
             | Series[bool]
             | Sequence[bool]
             | np_ndarray_bool
+            | BoolSeries
         ),
     ) -> Self: ...
     @overload

@@ -17,6 +17,7 @@ from pandas import (
     TimedeltaIndex,
 )
 from pandas.core.series import (
+    BoolSeries,
     TimedeltaSeries,
     TimestampSeries,
 )
@@ -313,7 +314,7 @@ class Timedelta(timedelta):
     @overload
     def __eq__(self, other: timedelta | Timedelta | np.timedelta64) -> bool: ...  # type: ignore[overload-overlap] # pyright: ignore[reportOverlappingOverload]
     @overload
-    def __eq__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> Series[bool]: ...  # type: ignore[overload-overlap]
+    def __eq__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> BoolSeries: ...  # type: ignore[overload-overlap]
     @overload
     def __eq__(  # type: ignore[overload-overlap]
         self, other: TimedeltaIndex | npt.NDArray[np.timedelta64]
@@ -324,7 +325,7 @@ class Timedelta(timedelta):
     @overload
     def __ne__(self, other: timedelta | Timedelta | np.timedelta64) -> bool: ...  # type: ignore[overload-overlap] # pyright: ignore[reportOverlappingOverload]
     @overload
-    def __ne__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> Series[bool]: ...  # type: ignore[overload-overlap]
+    def __ne__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> BoolSeries: ...  # type: ignore[overload-overlap]
     @overload
     def __ne__(  # type: ignore[overload-overlap]
         self, other: TimedeltaIndex | npt.NDArray[np.timedelta64]
@@ -359,7 +360,7 @@ class Timedelta(timedelta):
         self, other: TimedeltaIndex | npt.NDArray[np.timedelta64]
     ) -> npt.NDArray[np.bool_]: ...
     @overload
-    def __le__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> Series[bool]: ...
+    def __le__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> BoolSeries: ...
     # Override due to more types supported than dt.timedelta
     @overload  # type: ignore[override]
     def __lt__(self, other: timedelta | Timedelta | np.timedelta64) -> bool: ...  # type: ignore[misc]
@@ -368,7 +369,7 @@ class Timedelta(timedelta):
         self, other: TimedeltaIndex | npt.NDArray[np.timedelta64]
     ) -> npt.NDArray[np.bool_]: ...
     @overload
-    def __lt__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> Series[bool]: ...
+    def __lt__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> BoolSeries: ...
     # Override due to more types supported than dt.timedelta
     @overload  # type: ignore[override]
     def __ge__(self, other: timedelta | Timedelta | np.timedelta64) -> bool: ...  # type: ignore[misc]
@@ -377,7 +378,7 @@ class Timedelta(timedelta):
         self, other: TimedeltaIndex | npt.NDArray[np.timedelta64]
     ) -> npt.NDArray[np.bool_]: ...
     @overload
-    def __ge__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> Series[bool]: ...
+    def __ge__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> BoolSeries: ...
     # Override due to more types supported than dt.timedelta
     @overload  # type: ignore[override]
     def __gt__(self, other: timedelta | Timedelta | np.timedelta64) -> bool: ...  # type: ignore[misc]
@@ -386,7 +387,7 @@ class Timedelta(timedelta):
         self, other: TimedeltaIndex | npt.NDArray[np.timedelta64]
     ) -> npt.NDArray[np.bool_]: ...
     @overload
-    def __gt__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> Series[bool]: ...
+    def __gt__(self, other: TimedeltaSeries | Series[pd.Timedelta]) -> BoolSeries: ...
     def __hash__(self) -> int: ...
     def isoformat(self) -> str: ...
     def to_numpy(self) -> np.timedelta64: ...

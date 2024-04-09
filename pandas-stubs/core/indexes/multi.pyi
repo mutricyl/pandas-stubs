@@ -12,6 +12,7 @@ from typing import (
 import numpy as np
 import pandas as pd
 from pandas.core.indexes.base import Index
+from pandas.core.series import BoolSeries
 from typing_extensions import Self
 
 from pandas._typing import (
@@ -125,6 +126,7 @@ class MultiIndex(Index[Any]):
             | pd.Series[bool]
             | Sequence[bool]
             | np_ndarray_bool
+            | BoolSeries
         ),
     ) -> Self: ...
     @overload

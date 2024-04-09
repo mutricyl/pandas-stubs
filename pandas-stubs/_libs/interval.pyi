@@ -14,6 +14,7 @@ from pandas import (
     Timestamp,
 )
 from pandas.core.series import (
+    BoolSeries,
     TimedeltaSeries,
     TimestampSeries,
 )
@@ -175,7 +176,7 @@ class Interval(IntervalMixin, Generic[_OrderableT]):
     def __gt__(
         self,
         other: Series[int] | Series[float] | TimestampSeries | TimedeltaSeries,
-    ) -> Series[bool]: ...
+    ) -> BoolSeries: ...
     @overload
     def __lt__(self, other: Interval[_OrderableT]) -> bool: ...
     @overload
@@ -184,7 +185,7 @@ class Interval(IntervalMixin, Generic[_OrderableT]):
     def __lt__(
         self,
         other: Series[int] | Series[float] | TimestampSeries | TimedeltaSeries,
-    ) -> Series[bool]: ...
+    ) -> BoolSeries: ...
     @overload
     def __ge__(self, other: Interval[_OrderableT]) -> bool: ...
     @overload
@@ -193,7 +194,7 @@ class Interval(IntervalMixin, Generic[_OrderableT]):
     def __ge__(
         self,
         other: Series[int] | Series[float] | TimestampSeries | TimedeltaSeries,
-    ) -> Series[bool]: ...
+    ) -> BoolSeries: ...
     @overload
     def __le__(self, other: Interval[_OrderableT]) -> bool: ...
     @overload
@@ -203,7 +204,7 @@ class Interval(IntervalMixin, Generic[_OrderableT]):
     @overload
     def __eq__(self: IntervalT, other: IntervalIndex[IntervalT]) -> np_ndarray_bool: ...  # type: ignore[overload-overlap]
     @overload
-    def __eq__(self, other: Series[_OrderableT]) -> Series[bool]: ...  # type: ignore[overload-overlap]
+    def __eq__(self, other: Series[_OrderableT]) -> BoolSeries: ...  # type: ignore[overload-overlap]
     @overload
     def __eq__(self, other: object) -> Literal[False]: ...
     @overload
@@ -211,7 +212,7 @@ class Interval(IntervalMixin, Generic[_OrderableT]):
     @overload
     def __ne__(self: IntervalT, other: IntervalIndex[IntervalT]) -> np_ndarray_bool: ...  # type: ignore[overload-overlap]
     @overload
-    def __ne__(self, other: Series[_OrderableT]) -> Series[bool]: ...  # type: ignore[overload-overlap]
+    def __ne__(self, other: Series[_OrderableT]) -> BoolSeries: ...  # type: ignore[overload-overlap]
     @overload
     def __ne__(self, other: object) -> Literal[True]: ...
 

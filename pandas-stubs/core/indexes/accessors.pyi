@@ -26,6 +26,7 @@ from pandas.core.arrays import (
 from pandas.core.base import NoNewAttributesMixin
 from pandas.core.frame import DataFrame
 from pandas.core.series import (
+    BoolSeries,
     PeriodSeries,
     Series,
     TimedeltaSeries,
@@ -84,7 +85,9 @@ class _DatetimeFieldOps(
     _DayLikeFieldOps[_DTFieldOpsReturnType], _MiniSeconds[_DTFieldOpsReturnType]
 ): ...
 
-_DTBoolOpsReturnType = TypeVar("_DTBoolOpsReturnType", Series[bool], np_ndarray_bool)
+_DTBoolOpsReturnType = TypeVar(
+    "_DTBoolOpsReturnType", Series[bool], np_ndarray_bool, BoolSeries
+)
 
 class _IsLeapYearProperty(Generic[_DTBoolOpsReturnType]):
     @property
@@ -367,7 +370,7 @@ class PeriodProperties(
 class CombinedDatetimelikeProperties(
     DatetimeProperties[
         Series[int],
-        Series[bool],
+        BoolSeries,
         Series,
         Series[dt.date],
         Series[dt.time],
@@ -382,7 +385,7 @@ class CombinedDatetimelikeProperties(
 class TimestampProperties(
     DatetimeProperties[
         Series[int],
-        Series[bool],
+        BoolSeries,
         TimestampSeries,
         Series[dt.date],
         Series[dt.time],

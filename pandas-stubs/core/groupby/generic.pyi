@@ -22,7 +22,10 @@ from pandas.core.groupby.groupby import (
     GroupBy,
     GroupByPlot,
 )
-from pandas.core.series import Series
+from pandas.core.series import (
+    BoolSeries,
+    Series,
+)
 from typing_extensions import (
     Self,
     TypeAlias,
@@ -155,9 +158,9 @@ class SeriesGroupBy(GroupBy[Series[S1]], Generic[S1, ByT]):
         self, other: Series, min_periods: int | None = ..., ddof: int | None = ...
     ) -> Series: ...
     @property
-    def is_monotonic_increasing(self) -> Series[bool]: ...
+    def is_monotonic_increasing(self) -> BoolSeries: ...
     @property
-    def is_monotonic_decreasing(self) -> Series[bool]: ...
+    def is_monotonic_decreasing(self) -> BoolSeries: ...
     def hist(
         self,
         by: IndexLabel | None = ...,

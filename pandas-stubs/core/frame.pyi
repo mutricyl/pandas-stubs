@@ -41,7 +41,10 @@ from pandas.core.indexing import (
     _LocIndexer,
 )
 from pandas.core.interchange.dataframe_protocol import DataFrame as DataFrameXchg
-from pandas.core.series import Series
+from pandas.core.series import (
+    BoolSeries,
+    Series,
+)
 from pandas.core.window import (
     Expanding,
     ExponentialMovingWindow,
@@ -1590,7 +1593,7 @@ class DataFrame(NDFrame, OpsMixin):
         bool_only: _bool | None = ...,
         skipna: _bool = ...,
         **kwargs,
-    ) -> Series[_bool]: ...
+    ) -> BoolSeries: ...
     @overload
     def any(
         self,
@@ -1608,7 +1611,7 @@ class DataFrame(NDFrame, OpsMixin):
         bool_only: _bool | None = ...,
         skipna: _bool = ...,
         **kwargs,
-    ) -> Series[_bool]: ...
+    ) -> BoolSeries: ...
     def asof(self, where, subset: _str | list[_str] | None = ...) -> DataFrame: ...
     def asfreq(
         self,

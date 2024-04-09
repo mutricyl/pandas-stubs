@@ -20,8 +20,8 @@ from pandas import (
     Index,
     TimedeltaIndex,
 )
-from pandas.core.series import (
-    Series,
+from pandas.core.series import (  # Series,
+    BoolSeries,
     TimedeltaSeries,
     TimestampSeries,
 )
@@ -171,25 +171,25 @@ class Timestamp(datetime):
     @overload
     def __le__(self, other: Index | npt.NDArray[np.datetime64]) -> np_ndarray_bool: ...
     @overload
-    def __le__(self, other: TimestampSeries) -> Series[bool]: ...
+    def __le__(self, other: TimestampSeries) -> BoolSeries: ...
     @overload  # type: ignore[override]
     def __lt__(self, other: Timestamp | datetime | np.datetime64) -> bool: ...  # type: ignore[misc]
     @overload
     def __lt__(self, other: Index | npt.NDArray[np.datetime64]) -> np_ndarray_bool: ...
     @overload
-    def __lt__(self, other: TimestampSeries) -> Series[bool]: ...
+    def __lt__(self, other: TimestampSeries) -> BoolSeries: ...
     @overload  # type: ignore[override]
     def __ge__(self, other: Timestamp | datetime | np.datetime64) -> bool: ...  # type: ignore[misc]
     @overload
     def __ge__(self, other: Index | npt.NDArray[np.datetime64]) -> np_ndarray_bool: ...
     @overload
-    def __ge__(self, other: TimestampSeries) -> Series[bool]: ...
+    def __ge__(self, other: TimestampSeries) -> BoolSeries: ...
     @overload  # type: ignore[override]
     def __gt__(self, other: Timestamp | datetime | np.datetime64) -> bool: ...  # type: ignore[misc]
     @overload
     def __gt__(self, other: Index | npt.NDArray[np.datetime64]) -> np_ndarray_bool: ...
     @overload
-    def __gt__(self, other: TimestampSeries) -> Series[bool]: ...
+    def __gt__(self, other: TimestampSeries) -> BoolSeries: ...
     # error: Signature of "__add__" incompatible with supertype "date"/"datetime"
     @overload  # type: ignore[override]
     def __add__(
@@ -225,7 +225,7 @@ class Timestamp(datetime):
     @overload
     def __eq__(self, other: Timestamp | datetime | np.datetime64) -> bool: ...  # type: ignore[overload-overlap] # pyright: ignore[reportOverlappingOverload]
     @overload
-    def __eq__(self, other: TimestampSeries) -> Series[bool]: ...  # type: ignore[overload-overlap]
+    def __eq__(self, other: TimestampSeries) -> BoolSeries: ...  # type: ignore[overload-overlap]
     @overload
     def __eq__(self, other: npt.NDArray[np.datetime64] | Index) -> np_ndarray_bool: ...  # type: ignore[overload-overlap]
     @overload
@@ -233,7 +233,7 @@ class Timestamp(datetime):
     @overload
     def __ne__(self, other: Timestamp | datetime | np.datetime64) -> bool: ...  # type: ignore[overload-overlap] # pyright: ignore[reportOverlappingOverload]
     @overload
-    def __ne__(self, other: TimestampSeries) -> Series[bool]: ...  # type: ignore[overload-overlap]
+    def __ne__(self, other: TimestampSeries) -> BoolSeries: ...  # type: ignore[overload-overlap]
     @overload
     def __ne__(self, other: npt.NDArray[np.datetime64] | Index) -> np_ndarray_bool: ...  # type: ignore[overload-overlap]
     @overload

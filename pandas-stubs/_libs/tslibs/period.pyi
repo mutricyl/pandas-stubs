@@ -8,11 +8,11 @@ import numpy as np
 from pandas import (
     Index,
     PeriodIndex,
-    Series,
     Timedelta,
     TimedeltaIndex,
 )
 from pandas.core.series import (
+    BoolSeries,
     OffsetSeries,
     PeriodSeries,
     TimedeltaSeries,
@@ -100,7 +100,7 @@ class Period(PeriodMixin):
     @overload
     def __eq__(self, other: PeriodIndex) -> npt.NDArray[np.bool_]: ...  # type: ignore[overload-overlap]
     @overload
-    def __eq__(self, other: PeriodSeries) -> Series[bool]: ...  # type: ignore[overload-overlap]
+    def __eq__(self, other: PeriodSeries) -> BoolSeries: ...  # type: ignore[overload-overlap]
     @overload
     def __eq__(self, other: object) -> Literal[False]: ...
     @overload
@@ -108,25 +108,25 @@ class Period(PeriodMixin):
     @overload
     def __ge__(self, other: PeriodIndex) -> npt.NDArray[np.bool_]: ...
     @overload
-    def __ge__(self, other: PeriodSeries) -> Series[bool]: ...
+    def __ge__(self, other: PeriodSeries) -> BoolSeries: ...
     @overload
     def __gt__(self, other: Period) -> bool: ...
     @overload
     def __gt__(self, other: PeriodIndex) -> npt.NDArray[np.bool_]: ...
     @overload
-    def __gt__(self, other: PeriodSeries) -> Series[bool]: ...
+    def __gt__(self, other: PeriodSeries) -> BoolSeries: ...
     @overload
     def __le__(self, other: Period) -> bool: ...
     @overload
     def __le__(self, other: PeriodIndex) -> npt.NDArray[np.bool_]: ...
     @overload
-    def __le__(self, other: PeriodSeries) -> Series[bool]: ...
+    def __le__(self, other: PeriodSeries) -> BoolSeries: ...
     @overload
     def __lt__(self, other: Period) -> bool: ...
     @overload
     def __lt__(self, other: PeriodIndex) -> npt.NDArray[np.bool_]: ...
     @overload
-    def __lt__(self, other: PeriodSeries) -> Series[bool]: ...
+    def __lt__(self, other: PeriodSeries) -> BoolSeries: ...
     #  ignore[misc] here because we know all other comparisons
     #  are False, so we use Literal[False]
     @overload
@@ -134,7 +134,7 @@ class Period(PeriodMixin):
     @overload
     def __ne__(self, other: PeriodIndex) -> npt.NDArray[np.bool_]: ...  # type: ignore[overload-overlap]
     @overload
-    def __ne__(self, other: PeriodSeries) -> Series[bool]: ...  # type: ignore[overload-overlap]
+    def __ne__(self, other: PeriodSeries) -> BoolSeries: ...  # type: ignore[overload-overlap]
     @overload
     def __ne__(self, other: object) -> Literal[True]: ...
     # Ignored due to indecipherable error from mypy:
